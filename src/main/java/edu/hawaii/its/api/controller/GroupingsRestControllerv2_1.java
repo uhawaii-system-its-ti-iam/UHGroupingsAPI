@@ -375,13 +375,28 @@ public class GroupingsRestControllerv2_1 {
      * Update grouping to add a new owner.
      */
     @PutMapping(value = "/groupings/{path:[\\w-:.]+}/owners/{uid:[\\w-:.]+}")
-    public ResponseEntity<GroupingsServiceResult> addOwner(@RequestHeader("current_user") String currentUser,
+    public ResponseEntity<List<GroupingsServiceResult>> addOwner(
+            @RequestHeader("current_user") String currentUser,
             @PathVariable String path,
             @PathVariable String uid) {
         logger.info("Entered REST addOwner...");
         return ResponseEntity
                 .ok()
                 .body(memberAttributeService.assignOwnership(path, currentUser, uid));
+    }
+
+    /**
+     * Add multiple users with a list of uids as owners.
+     */
+    @PutMapping(value = "/groupings/{path:[\\w-:.]+}/multipleOwners/{uids}")
+    public ResponseEntity<List<GroupingsServiceResult>> multipleOwners(
+            @RequestHeader("current_user") String currentUser,
+            @PathVariable String path,
+            @PathVariable List<String> uids) throws IOException, MessagingException {
+        logger.info("Entered REST multipleOwners...");
+        return ResponseEntity
+                .ok()
+                .body(memberAttributeService.assignOwnerships(currentUser, path, uids));
     }
 
     /**

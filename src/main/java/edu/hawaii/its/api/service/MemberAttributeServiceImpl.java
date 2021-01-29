@@ -117,7 +117,20 @@ public class MemberAttributeServiceImpl implements MemberAttributeService {
 
     //give ownership to a new user
     @Override
-    public GroupingsServiceResult assignOwnership(String groupingPath, String ownerUsername, String newOwnerUsername) {
+    public List<GroupingsServiceResult> assignOwnership(String groupingPath, String ownerUsername, String newOwnerUsername) {
+        logger.info("assignOwnership; groupingPath: "
+                + groupingPath
+                + "; ownerUsername: "
+                + ownerUsername
+                + "; newOwnerUsername: "
+                + newOwnerUsername
+                + ";");
+
+        return assignOwnershipHelper(groupingPath, ownerUsername, newOwnerUsername);
+    }
+
+
+    public List<GroupingsServiceResult> assignOwnershipHelper(String groupingPath, String ownerUsername, String newOwnerUsername) {
         logger.info("assignOwnership; groupingPath: "
                 + groupingPath
                 + "; ownerUsername: "
@@ -126,7 +139,7 @@ public class MemberAttributeServiceImpl implements MemberAttributeService {
                 + newOwnerUsername
                 + ";");
         String action;
-        GroupingsServiceResult ownershipResult;
+        List<GroupingsServiceResult> ownershipResult = new ArrayList<>();
 
         if (isUhUuid(newOwnerUsername)) {
             action = "give user with id " + newOwnerUsername + " ownership of " + groupingPath;
@@ -141,12 +154,25 @@ public class MemberAttributeServiceImpl implements MemberAttributeService {
         WsSubjectLookup user = grouperFS.makeWsSubjectLookup(ownerUsername);
         WsAddMemberResults amr = grouperFS.makeWsAddMemberResults(groupingPath + OWNERS, user, newOwnerUsername);
 
-        ownershipResult = hs.makeGroupingsServiceResult(amr, action);
+        ownershipResult.add(hs.makeGroupingsServiceResult(amr, action));
 
         membershipService.updateLastModified(groupingPath);
         membershipService.updateLastModified(groupingPath + OWNERS);
 
         return ownershipResult;
+    }
+
+    @Override
+    public List<GroupingsServiceResult> assignOwnerships(String ownerUsername, String groupingPath, List<String> uids) {
+        List<GroupingsServiceResult> ownersList = new ArrayList<>();
+        for (String ownerToAdd : uids) {
+            try {
+                ownersList.addAll(assignOwnership(groupingPath, ownerUsername, ownerToAdd));
+            } catch (GcWebServiceError e) {
+
+            }
+        }
+        return ownersList;
     }
 
     //remove ownership of a grouping from a current owner

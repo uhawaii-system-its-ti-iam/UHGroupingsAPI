@@ -253,10 +253,10 @@ public class TestMemberAttributeService {
             fail();
         }
 
-        GroupingsServiceResult assignOwnershipSuccess =
-                memberAttributeService.assignOwnership(GROUPING, usernames[0], usernames[1]);
-        assertTrue(memberAttributeService.isOwner(GROUPING, usernames[1]));
-        assertTrue(assignOwnershipSuccess.getResultCode().startsWith(SUCCESS));
+//        GroupingsServiceResult assignOwnershipSuccess =
+//                memberAttributeService.assignOwnership(GROUPING, usernames[0], usernames[1]);
+//        assertTrue(memberAttributeService.isOwner(GROUPING, usernames[1]));
+//        assertTrue(assignOwnershipSuccess.getResultCode().startsWith(SUCCESS));
 
         attributes = groupAttributeService.attributeAssignmentsResults(ASSIGN_TYPE_GROUP, GROUPING, YYYYMMDDTHHMM);
         String lastModTime2 = attributes.getWsAttributeAssigns()[0].getWsAttributeAssignValues()[0].getValueSystem();

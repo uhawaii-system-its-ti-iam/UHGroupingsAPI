@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface MemberAttributeService extends BatchIsMember {
-    GroupingsServiceResult assignOwnership(String groupingPath, String ownerUsername, String newOwnerUsername);
+    List<GroupingsServiceResult> assignOwnership(String groupingPath, String ownerUsername, String newOwnerUsername);
+
+    List<GroupingsServiceResult> assignOwnerships(String ownerUsername, String groupingPath, List<String> uids);
 
     GroupingsServiceResult removeOwnership(String groupingPath, String actor, String ownerToRemoveUsername);
 

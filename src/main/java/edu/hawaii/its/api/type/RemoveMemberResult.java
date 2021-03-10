@@ -9,9 +9,11 @@ public class RemoveMemberResult {
     private String result;
     private String userIdentifier;
 
+    // Constructor
     public RemoveMemberResult() {
     }
 
+    // Constructor
     public RemoveMemberResult(boolean userWasRemoved, String pathOfRemoved, String name, String uhUuid, String uid,
             String result, String userIdentifier) {
         this.userWasRemoved = userWasRemoved;
@@ -23,6 +25,7 @@ public class RemoveMemberResult {
         this.userIdentifier = userIdentifier;
     }
 
+    // Constructor
     public RemoveMemberResult(String userIdentifier, String result) {
         this.userIdentifier = userIdentifier;
         this.result = result;
